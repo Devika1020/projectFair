@@ -41,7 +41,7 @@ function Footer() {
         <Col lg={3} md={3}>
         <h4 className='text-white'><b>Contact Us</b></h4>
         <input className='w-100 p-1' type="text" name="" id="" placeholder='enter email' /><br /><br />
-        <button className='bg-danger  text-white w-100'>Send</button>
+        <button className='bg-success  text-white w-100'>Send</button>
         <div >
           <i style={{ marginLeft: '3rem' }} class="fa-brands fa-instagram"></i>
           <i  style={{ marginLeft: '3rem' }} class="fa-brands fa-facebook"></i>

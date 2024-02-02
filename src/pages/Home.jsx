@@ -1,13 +1,30 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import load from '../assets/load.jpg'
 import { Link, useNavigate } from 'react-router-dom'
 import Projectcard from '../components/Projectcard'
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 function Home() {
+    const[loginStatus,setLoginStatus]=useState(false)
+
+    useEffect(()=>{
+        if(sessionStorage.getItem("token")){
+            setLoginStatus(true)
+        }else{
+            setLoginStatus(false)
+        }
+    },[])
     const navigate=useNavigate()
     const handlenavigate=()=>{
-        navigate('/projects')
+        if(loginStatus==true){
+            navigate('/projects')
+        }else{
+            toast.info("Plaese login to our projects")
+            // navigate('/login')
+        }
+        
     }
   return (<>
   <div style={{height:'100vh',backgroundColor:'#369'}} className='w-100 d-flex justify-content-center align-items-center rounded'>
@@ -20,7 +37,7 @@ function Home() {
                 Project Fair
             </h1>
 <p style={{textAlign:'justify'}}><b>One stop destination for all software development projects. Where user can add and manage their projects. As well as access all projects available in our websites...Why you are waiting !!!</b></p>
-<Link className='btn btn-success mt-3' to={'/login'} >Start Explore <i className='fa-solid fa-arrow-right'></i></Link>
+{loginStatus?<Link className='btn btn-success mt-3' to={'/dashboard'}>Manage Your Projects <i className='fa-solid fa-arrow-right'></i></Link>:<Link className='btn btn-success mt-3' to={'/login'} >Start Explore <i className='fa-solid fa-arrow-right'></i></Link>}
         </div>
         <div className='col-lg-2'></div>
         <div className='col-lg-4  w-45 '>
@@ -42,7 +59,9 @@ function Home() {
 <div className='text-center '>
     <button onClick={handlenavigate} className='btn btn shadow'><u>View More Projects</u></button>
 </div>
+<ToastContainer autoclose={3000}/>
   </div>
+ 
   </>
     
   )
