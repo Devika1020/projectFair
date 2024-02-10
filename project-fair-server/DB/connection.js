@@ -3,7 +3,7 @@ const connectionString=process.env.CONNECTION_STRING
 
 mongoose.connect(connectionString).then(()=>{
     console.log("MongoDb Atlas connected successfully with pfserver");
-}).catch(()=>{
+}).catch((reason)=>{
     console.log(reason);
     console.log("MongoDb connection failed");
 })

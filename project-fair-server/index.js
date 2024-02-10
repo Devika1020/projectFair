@@ -3,8 +3,10 @@ const express=require('express')
 const cors= require('cors')
 const router=require('./Routes/router')
 require('./DB/connection')
-const pfServer=express()
 
+const pfServer=express()
+// available file or folder from server
+pfServer.use('/uploads',express.static('./uploads'))
 
 pfServer.use(cors())
 const PORT=3000
@@ -20,3 +22,4 @@ pfServer.get('/',(req,res)=>{
 // pfServer.get('/',(req,res)=>{
 //     res.send("Post Request")
 // })
+

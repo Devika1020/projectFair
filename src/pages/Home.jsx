@@ -6,11 +6,28 @@ import Projectcard from '../components/Projectcard'
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { homeProjectAPI } from '../services/allAPI'
 function Home() {
+    const [allProjects,setAllprojects]=useState([])
     const[loginStatus,setLoginStatus]=useState(false)
+const getHomeproject=async()=>{
+    const result =await homeProjectAPI()
+   try{ 
+    if(result.status===200){
+    setAllprojects(result.data)
+}
+}catch(err){
+console.log(err);
+}
+}
+console.log(allProjects);
 
+       
+  
     useEffect(()=>{
+        getHomeproject()
         if(sessionStorage.getItem("token")){
+
             setLoginStatus(true)
         }else{
             setLoginStatus(false)
@@ -23,6 +40,7 @@ function Home() {
         }else{
             toast.info("Plaese login to our projects")
             // navigate('/login')
+            
         }
         
     }
@@ -50,10 +68,11 @@ function Home() {
   <div className='mt-5'>
     <h1 className='text-center mb-5'>Explore Our Projects</h1>
 <marquee >
-    <div>
-        <div className='project mt-5'>
-            <Projectcard/>
-        </div>
+    <div className='d-flex'>
+        {allProjects.length>0&&
+        allProjects.map((project,index)=>(<div className='project me-5'>
+            <Projectcard project={project}/>
+        </div>))}
     </div>
 </marquee>
 <div className='text-center '>

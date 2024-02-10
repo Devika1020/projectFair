@@ -54,6 +54,7 @@ const handleLogin=async(e)=>{
   if(result.status==200){
     sessionStorage.setItem("username",result.data.existingUser.username)
     sessionStorage.setItem("token",result.data.token)
+    sessionStorage.setItem("userDetails",JSON.stringify(result.data.existingUser))
     setLoginStatus(true)
   setTimeout(()=>
 {

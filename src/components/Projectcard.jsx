@@ -3,7 +3,9 @@ import Card from 'react-bootstrap/Card';
 import { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import { Row, Col } from 'react-bootstrap';
-function Projectcard() {
+import SERVER_URL from '../services/serverUrl';
+
+function Projectcard({project}) {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -11,9 +13,9 @@ function Projectcard() {
    <>
 
     <Card className='shadow mb-5 btn' style={{ width: '20rem' }} onClick={handleShow}>
-      <Card.Img variant="top" src="https://i.postimg.cc/QtsKNW66/images.png" />
+      <Card.Img height={'200px'} variant="top" src={`${SERVER_URL}/uploads/${project?.projectImage}`} />
       <Card.Body>
-        <Card.Title>Ecommerce App Development</Card.Title>
+        <Card.Title>{project?.title}</Card.Title>
       </Card.Body>
     </Card>
     <Modal size='lg' show={show} onHide={handleClose}>
@@ -23,19 +25,19 @@ function Projectcard() {
         <Modal.Body>
           <Row>
             <Col sm={12} md={6}>
-              <img className='img-fluid' src="https://i.postimg.cc/QtsKNW66/images.png" alt="Project Img" />
+              <img className='img-fluid' src={`${SERVER_URL}/uploads/${project?.projectImage}`} alt="Project Img" />
             </Col>
             <Col sm={12} md={6}>
-              <h2 className="fw-bolder text-primary"> Title</h2>
-              <p>Project Overview : <span>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aspernatur facilis modi optio animi dolore! Quaerat nisi cupiditate veritatis laudantium impedit, repellat eligendi, vero soluta nemo eius optio incidunt possimus ipsum.</span>
+              <h2 className="fw-bolder text-primary">{project?.title}</h2>
+              <p>Project Overview : <span>{project?.overview}</span>
               </p>
-              <p>Languages Used: <span className='fw-bolder text-danger'> HTML,CSS,JS</span></p>
+              <p>Languages Used: <span className='fw-bolder text-danger'> {project?.languages}</span></p>
             </Col>
 
           </Row>
           <div className='mt-3'>
-            <a href="https://github.com/" target='_blank' className='btn'><i className='fa-brands fa-github fa-2x' ></i></a>
-            <a href="www.github.com" target='_blank' className='btn'><i className='fa-solid fa-link fa-2x' ></i></a>
+            <a href={project?.github} target='_blank' className='btn'><i className='fa-brands fa-github fa-2x' ></i></a>
+            <a href={project?.website} target='_blank' className='btn'><i className='fa-solid fa-link fa-2x' ></i></a>
 
           </div>
         </Modal.Body>

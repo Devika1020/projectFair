@@ -1,9 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Modal,Button } from 'react-bootstrap'
 import add from '../assets/add.jpg'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { addProjectAPI } from '../services/allAPI';
+import { addResponseContext } from '../Context/ContextShare';
 function Add() {
+const {addResponse,setAddResponse}=useContext(addResponseContext)
+
   const [projectData,setProjectData]=useState({
     title:"",languages:"",overview:"",github:"",website:"",projectImage:""
   })
@@ -31,10 +35,10 @@ useEffect(()=>{
   //  setPreview(add)
   }
 
-  const handleSave=()=>{
+  const handleSave=async()=>{
      
-    const {title,languages,github,website,overview}=projectData
-    if(!title||!languages||!github||!website||!overview){
+    const {title,languages,github,website,overview,projectImage}=projectData
+    if(!title||!languages||!github||!website||!overview||!projectImage){
     toast.success("please fill the form completely")
     }else{
     const reqBody=new FormData()
@@ -43,17 +47,35 @@ useEffect(()=>{
     reqBody.append("github",github)
     reqBody.append("website",website)
     reqBody.append("overview",overview)
+    reqBody.append("projectImage",projectImage)
+    const token=sessionStorage.getItem("token")
+    if(token){
    const reqHeader={
-      "Content-Type":"multipart/form-data"
+      "Content-Type":"multipart/form-data",
+      "Authorization":`Bearer ${token}`
     }
     console.log("proceed to api call");
-    }
-    }
+    try{
+      const result =await addProjectAPI(reqBody,reqHeader)
+      console.log(result);
+      if(result.status===200){
+        // toast.success(`New Project"${result.data.title}"has added`);
+        setAddResponse(result.data)
+        handleClose()
+      }else{
+        toast.warning(result.response.data)
+      }
 
+    }catch(err){
+      console.log(err);
+    }
+    }
+    }
+  }
 
   return (
     <>
-    <button onClick={handleShow} className='btn btn-link text-success'><i className='fa-solid fa-plus'>Add Project</i></button>
+    <button onClick={handleShow} className='btn btn-link text-success ms-auto'><i className='fa-solid fa-plus'>Add Project</i></button>
     <Modal size='lg'
         show={show}
         onHide={handleClose}
@@ -98,7 +120,7 @@ useEffect(()=>{
   
 </div>
     </div>
-    <ToastContainer autoClose={3000}/>
+
             </div>
         </Modal.Body>
         <Modal.Footer>
@@ -107,7 +129,7 @@ useEffect(()=>{
           </Button>
           <Button onClick={handleSave} variant="primary">Save</Button>
         </Modal.Footer>
-      </Modal>
+      </Modal>    <ToastContainer autoClose={3000}/>
     </>
   )
 }
